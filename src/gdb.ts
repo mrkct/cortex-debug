@@ -38,6 +38,7 @@ import { PyOCDServerController } from './pyocd';
 import { BMPServerController } from './bmp';
 import { PEServerController } from './pemicro';
 import { QEMUServerController } from './qemu';
+import { LinkServerServerController } from './linkserver';
 import { ExternalServerController } from './external';
 import { SymbolTable } from './backend/symbols';
 import { SymbolInformation, SymbolScope } from './symbols';
@@ -87,6 +88,7 @@ const SERVER_TYPE_MAP = {
     pe: PEServerController,
     bmp: BMPServerController,
     qemu: QEMUServerController,
+    linkserver: LinkServerServerController,
     external: ExternalServerController
 };
 

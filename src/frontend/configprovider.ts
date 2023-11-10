@@ -147,9 +147,12 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
             case 'qemu':
                 validationResponse = this.verifyQEMUConfiguration(folder, config);
                 break;
+            case 'linkserver':
+                validationResponse = this.verifyLinkServerConfiguration(folder, config);
+                break;
             default:
                 // tslint:disable-next-line:max-line-length
-                validationResponse = 'Invalid servertype parameters. The following values are supported: "jlink", "openocd", "stlink", "stutil", "pyocd", "bmp", "pe", "qemu", "external"';
+                validationResponse = 'Invalid servertype parameters. The following values are supported: "jlink", "openocd", "stlink", "stutil", "pyocd", "bmp", "pe", "qemu", "linkserver", "external"';
                 break;
         }
 
@@ -438,6 +441,19 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
                 }
             }
         }
+    }
+
+    private verifyLinkServerConfiguration(folder: vscode.WorkspaceFolder | undefined, config: vscode.DebugConfiguration): string {
+        this.setOsSpecficConfigSetting(config, 'serverpath', 'LinkServerPath');
+        if (!config.device) {
+            return 'You must specify the device you want to debug. Run \'LinkServer devices\' in a terminal for the list of supported devices';
+        }
+
+        if (config.rtos) {
+            return 'The LinkServer GDB Server does not have support for the rtos option.';
+        }
+
+        return null;
     }
 
     private verifyQEMUConfiguration(folder: vscode.WorkspaceFolder | undefined, config: vscode.DebugConfiguration): string {
